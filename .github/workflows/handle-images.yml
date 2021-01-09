@@ -1,0 +1,23 @@
+name: Handle-Images
+
+on:
+  push:
+    branches: 
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install build dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y git wget imagemagick
+    - name: Handle Images
+      env:
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        /home/runner/work/images-2021/images-2021/handle-images 2021 $TOKEN
+        curl https://purge.jsdelivr.net/gh/spjsjg/images-2021@master/images-2021.txt
